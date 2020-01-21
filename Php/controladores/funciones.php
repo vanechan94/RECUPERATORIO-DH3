@@ -34,12 +34,12 @@ function validar($datos,$imagen){
         $ext = pathinfo($nombre,PATHINFO_EXTENSION);
         if($imagen['avatar']['error']!=0){
             $errores['avatar']="Debes subir tu foto...";
-    
+
         }elseif ($ext != "jpg" && $ext != "png") {
             $errores['avatar']="Formato inválido";
-        }        
+        }
     }
-    return $errores;   
+    return $errores;
 }
 
 //Esta función se encarga de validad los datos queel usuario coloca en el formulario de Login
@@ -79,17 +79,24 @@ function validarOlvidePassword($datos){
     if($password != $passwordRepeat){
         $errores['passwordRepeat']="Las contraseñas deben ser iguales";
     }
-    return $errores;   
+    return $errores;
 }
 
 //Esta función nos ayuda a preparar el array asociativo de mi registro
-function armarRegistro($datos){
-    
+function armarRegistro($datos, $avatar){
+return[
+  'userName' => $datos['userName'],
+  'email' => $datos['email'],
+  'pasword' => $datos['pasword'],
+  'avatar' => $avatar['imagenes']
+];
 }
 
 //Función que nos permite guardar los datos en nuestro archivo json y de esa forma persistir los datos dispuestos por el usuario en el formulario
 
 function guardarRegistro($registro){
+  $json = json_encode($registro);
+  file_put_contents("usuarios.json", $json, FILE_APPEND);
 
 }
 
@@ -113,8 +120,14 @@ function armarAvatar($imagen){
 
 //Función que nos permite buscar por email, a ver si el usuario existe o no en nuestra base de datos, que en este momento es un archivo json.
 function buscarPorEmail($email){
-    $usuarios = abrirBaseDatos();
-    
+    $usuarios = abrirBaseDatos($_POST['email']);
+      foreach ($usuarios as $usuario) {
+        if ($usuario['email'] == $email) {
+           return $usuario;
+        }
+      }
+      return[];
+  
 }
 
 //Esta función abre nuestro archivo json y lo prepara para eliminar el último registro en blanco y además genero el array asociativo del mismo. Convierto de json a array asociativo para mas adelante con la funcion "bucarEmail" poder recorrerlo y verificar si el usuario existe o no en mi base de datos, dicha verificación la hago por el email del usuario, ya que es el dato único que tengo del usuario
@@ -157,5 +170,3 @@ function validarUsuario(){
         return false;
     }
 }
-
-
