@@ -10,19 +10,20 @@
       $errores["email"]="Usuario ya registrado";
     }else{
       $avatar = armarAvatar($_FILES);
+
       $registro = armarRegistro($_POST,$avatar);
       guardarRegistro($registro);
      //De no excistir errores en la información tipeada por el usuario entonces lo redirecciono a donde yo desee.
+
       header("location:index.php");
       exit;
     }
+
   }else{
-    
     $userName = $_POST['userName'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $passwordRepeat = $_POST['passwordRepeat'];
-
+    $password2 = $_POST['passwordRepeat'];
   }
 }
 ?>
@@ -42,29 +43,29 @@
         <div id="formContainer" class="row align-items-center">
           <div class="col-8 offset-2  ">
             <h1>Registración</h1>
-<?php
-if(isset($errores)):?>
-<ul class="alert alert-danger">
-<?php foreach ($errores as $value) :?>
-<li><?=$value;?><li>
-<?php endforeach; ?>
-</ul>
-<?php endif; ?>
+            <?php if(isset($errores)):?>
+              <ul class="alert alert-danger">
+                <?php foreach ($errores as $value) :?>
+                    <li><?=$value;?></li>
+                <?php endforeach;?>
+              </ul>
+            <?php endif;?>
+
             <form id="formulario"  class="form" name="formRegistro" novalidate action="" method="POST" enctype="multipart/form-data">
               <div class="form-group">
                   <label for="userName">Nombre de usuario</label>
-                  <input required name="userName" type="text" value='<?= $userName ?? '' ?>' class="form-control" id="userName" placeholder="Nombre de usuario">
+                  <input required name="userName" type="text" value= '<?= $userName ?? ''  ?>'  class="form-control" id="userName" placeholder="Nombre de usuario">
               </div>
               <div>
                 <!--Aquí les comparto este otro código donde pueden mostrar el error en el mismo lugar donde se produjo, usted decide como desea mostrar los errores-->
-               <?php if(isset($errores['userName'])):?>
-                 <h6 class="text-danger"><?= $errores['userName']; ?></h6>
-               <?php endif; ?>
+                <?php if(isset($errores['userName'])):?>
+                  <h6 class="text-danger"><?= $errores['userName'];?></h6>
+                <?php endif;?>
               </div>
 
               <div class="form-group">
                 <label for="email">Correo electrónico</label>
-                <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Ingrese su correo" value='<?= $email ?? '' ?>' required >
+                <input required name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Ingrese su correo" value='<?= $email ?? ''  ?>'>
               </div>
 
               <div class="form-group">
@@ -76,7 +77,7 @@ if(isset($errores)):?>
 
               <div class="form-group">
                 <label for="password">Repetir contraseña</label>
-                <input required name="passwordRepeat" type="password" value= '<?= $passwordRepeat ?? '' ?>' class="form-control" id="passwordRepeat" placeholder="Repetir contraseña">
+                <input required name="passwordRepeat" type="password" value='<?= $password2 ?? '' ?>' class="form-control" id="passwordRepeat" placeholder="Repetir contraseña">
               </div>
               <div class="form-group">
                 <label for="avatar">Avatar</label>

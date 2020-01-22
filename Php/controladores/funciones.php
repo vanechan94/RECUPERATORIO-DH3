@@ -83,20 +83,21 @@ function validarOlvidePassword($datos){
 }
 
 //Esta función nos ayuda a preparar el array asociativo de mi registro
-function armarRegistro($datos, $avatar){
-return[
-  'userName' => $datos['userName'],
-  'email' => $datos['email'],
-  'pasword' => $datos['pasword'],
-  'avatar' => $avatar['imagenes']
-];
+function armarRegistro($datos , $avatar){
+  return [
+    "userName" => $datos["userName"],
+    "email" => $datos["email"],
+    "password" => $datos["password"],
+    "avatar" => $avatar["imagenes"]
+  ];
+
 }
 
 //Función que nos permite guardar los datos en nuestro archivo json y de esa forma persistir los datos dispuestos por el usuario en el formulario
 
 function guardarRegistro($registro){
-$json = json_encode($registro);
-file_put_contents("usuarios.json", $json, FILE_APPEND);
+  $json = json_encode($registro);
+  file_put_contents("usuarios.json" , $json , FILE_APPEND  );
 }
 
 //Esta función nos permite armar el registro cuando el usuario selecciona el avatar
@@ -121,11 +122,12 @@ function armarAvatar($imagen){
 function buscarPorEmail($email){
     $usuarios = abrirBaseDatos($_POST['email']);
     foreach ($usuarios as $usuario) {
-      if ($usuario['email'] == $email) {
-         return $usuario;
+      if($usuario['email'] == $email){
+        return $usuario;
       }
+
     }
-    return[];
+ return[];
 }
 
 //Esta función abre nuestro archivo json y lo prepara para eliminar el último registro en blanco y además genero el array asociativo del mismo. Convierto de json a array asociativo para mas adelante con la funcion "bucarEmail" poder recorrerlo y verificar si el usuario existe o no en mi base de datos, dicha verificación la hago por el email del usuario, ya que es el dato único que tengo del usuario
